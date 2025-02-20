@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>204d1788-e313-4bd1-ad01-63f55e45b85d</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>RoseBud.py</StartupFile>
+    <StartupFile>RoseBud.pyw</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,7 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="RoseBud.py" />
+    <Compile Include="RBConfig.pyw" />
+    <Compile Include="RBWindow.pyw" />
+    <Compile Include="RoseBud.pyw" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
