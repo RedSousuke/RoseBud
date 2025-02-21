@@ -16,12 +16,13 @@ root.geometry(f"{rbc.screenWidth}x{rbc.screenHeight}")
 
 # Side panel following https://stackoverflow.com/a/66859503
 def expand():
-    width = (rbc.cur_width + 10) # Increase the width by 10
-    rep = root.after(5,width)
+    rbc.cur_width += 10 # Increase the width by 10
+    rep = root.after(5,expand)
     frame.config(width=rbc.cur_width) # Change the width to new increase width
     if rbc.cur_width >= rbc.max_frame_w: # If width is greater than maximum width 
         rbc.expanded = True # Frame is expended
         root.after_cancel(rep)
+        menu_b.config(command=contract)
         fill()
 
 def contract():
@@ -31,6 +32,7 @@ def contract():
     if rbc.cur_width <= rbc.min_frame_w: # If it is back to normal width
         rbc.expanded = False # Frame is not expanded
         root.after_cancel(rep) # Stop repeating the func
+        menu_b.config(command=expand)
         fill()
 
 def fill():
@@ -90,16 +92,11 @@ datasearch_b = Button(frame,image=datasearch,bg='red2',relief='flat')
 
 menu_b.grid(row=0,column=0)
 home_b.grid(row=1,column=0,pady=10)
-imgclass_b.grid(row=2,column=0,pady=50)
-audiotxt_b.grid(row=3,column=0)
+imgclass_b.grid(row=2,column=0,pady=10)
+audiotxt_b.grid(row=3,column=0, pady=10)
 
 # So that it does not depend on the widgets inside the frame
 frame.grid_propagate(False)
-
-imageFrame = Frame(root,)
-
-
-
 
 def start():
     root.mainloop()
