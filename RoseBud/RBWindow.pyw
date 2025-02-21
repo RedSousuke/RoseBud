@@ -1,5 +1,4 @@
-﻿from ast import Lambda
-from tkinter import *
+﻿from tkinter import *
 from tkinter import filedialog, messagebox
 import RBConfig as rbc
 import os
@@ -9,34 +8,11 @@ import shutil
 upload_folder = "uploads"
 os.makedirs(upload_folder, exist_ok=True)
 
-#Upload File Function
-def upload_file():
-    file_path = filedialog.askopenfilename(
-        title="Select a media file",
-        filetypes=[("Media Files", "*.png;*.jpg;*.jpeg;")]
-    )
-
-    if not file_path:
-        return
-
-    filename = os.path.basename(file_path)
-    destination_path = os.path.join(upload_folder, filename)
-
-    try:
-        shutil.copy(file_path, destination_path)
-        messagebox.showinfo("Success!", f"File uploaded successfully!\nSaved at: {destination_path}")
-    except Exception as e:
-        messagebox.showerror("Error!", f"Failed to upload file: {e}")
 
 root = Tk()
 root.title(rbc.title)
 root.geometry(f"{rbc.screenWidth}x{rbc.screenHeight}")
-w = Label(root, text="Welcome To RoseBud!", font={'Times', 24})
-w.pack()
 
-# Upload button
-upload_button = Button(root, text="Upload Media File", command=upload_file)
-upload_button.pack(pady=20)
 
 # Side panel following https://stackoverflow.com/a/66859503
 def expand():
@@ -74,6 +50,23 @@ def fill():
         imgclass_b.config(image=imageclassing,font=(0,21))
         audiotxt_b.config(image=audiotext,font=(0,21))
         datasearch_b.config(image=datasearch,font=(0,21))
+def upload_file():
+    file_path = filedialog.askopenfilename(
+        title="Select a media file",
+        filetypes=[("Media Files", "*.png;*.jpg;*.jpeg;")]
+    )
+
+    if not file_path:
+        return
+
+    filename = os.path.basename(file_path)
+    destination_path = os.path.join(upload_folder, filename)
+
+    try:
+        shutil.copy(file_path, destination_path)
+        messagebox.showinfo("Success!", f"File uploaded successfully!\nSaved at: {destination_path}")
+    except Exception as e:
+        messagebox.showerror("Error!", f"Failed to upload file: {e}")
 
 bigTitle = Label(root, text=rbc.title)
 bigTitle.place(anchor='center',relx=0.6,rely=0.05)
