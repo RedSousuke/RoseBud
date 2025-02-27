@@ -70,6 +70,45 @@ def upload_file():
     except Exception as e:
         messagebox.showerror("Error!", f"Failed to upload file: {e}")
 
+def page_handling(selection):
+    pages = ['homepage','audiopage','imagepage','datapage','helppage']
+    for ch in root.children:
+        if ch in pages:
+            root.children.get(ch).destroy()
+            break;
+    if (selection == 'audio'):
+        audiopage = Frame(root,name="audiopage",bg='lightsteelblue', width=(root.winfo_width()-frame.winfo_width()), height=root.winfo_height())
+        upload = Button(audiopage, text='Upload File',relief='flat')
+        audiopage.grid(row=0,column=1)
+
+    elif (selection == 'image'):
+        imagepage = Frame(root,bg='palegreen3',name='imagepage', width=(root.winfo_width()-frame.winfo_width()), height=root.winfo_height())
+        imagepage.grid(row=0,column=1)
+
+    elif (selection == 'data'):
+        datapage = Frame(root,bg='pink1',name='datapage', width=(root.winfo_width()-frame.winfo_width()), height=root.winfo_height())
+        datapage.grid(row=0,column=1)
+
+    elif (selection == 'help'):
+        helppage = Frame(root,bg='azure3',name='helppage', width=(root.winfo_width()-frame.winfo_width()), height=root.winfo_height())
+        helppage.grid(row=0,column=1)
+
+    else:
+        homepage = Frame(root,bg='lightgray',name='homepage', width=(root.winfo_width()-frame.winfo_width()), height=root.winfo_height())
+        homepage.grid(row=0,column=1)
+
+
+def setHome():
+    page_handling('home')
+def setAudio():
+    page_handling('audio')
+def setImage():
+    page_handling('image')
+def setData():
+    page_handling('data')
+def setHelp():
+    page_handling('help')
+
 bigTitle = Label(root, text=rbc.title)
 bigTitle.place(anchor='center',relx=0.6,rely=0.05)
 
@@ -81,14 +120,14 @@ audiotext = PhotoImage(file='Assets/microphone-icon.png')
 datasearch = PhotoImage(file='Assets/dbase.png')
 
 root.update()
-frame = Frame(root,bg='red3',width=50,height=root.winfo_height())
+frame = Frame(root,name='sidepanel',bg='red3',width=50,height=root.winfo_height())
 frame.grid(row=0,column=0) 
 
 menu_b = Button(frame, text='≡', bg='red2',relief='flat', font=(0,21), command=expand)
-home_b = Button(frame,image=home,bg='red2',relief='flat')
-imgclass_b = Button(frame,image=imageclassing,bg='red2',relief='flat')
-audiotxt_b = Button(frame,image=audiotext,bg='red2',relief='flat')
-datasearch_b = Button(frame,image=datasearch,bg='red2',relief='flat')
+home_b = Button(frame,image=home,bg='red2',relief='flat', command=setHome)
+imgclass_b = Button(frame,image=imageclassing,bg='red2',relief='flat', command=setImage)
+audiotxt_b = Button(frame,image=audiotext,bg='red2',relief='flat', command=setAudio)
+datasearch_b = Button(frame,image=datasearch,bg='red2',relief='flat', command=setData)
 
 menu_b.grid(row=0,column=0)
 home_b.grid(row=1,column=0,pady=10)
