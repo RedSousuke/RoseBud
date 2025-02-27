@@ -1,16 +1,15 @@
-﻿from tkinter import *
+﻿from gc import disable
+from tkinter import *
 from tkinter import filedialog, messagebox
 import RBConfig as rbc
 import os
 import shutil
 
-#Setup for upload folder
-upload_folder = "uploads"
-os.makedirs(upload_folder, exist_ok=True)
-
 
 root = Tk()
 root.title(rbc.title)
+root.resizable(0,0)
+root.wm_attributes('-transparentcolor','gray26')
 root.geometry(f"{rbc.screenWidth}x{rbc.screenHeight}")
 
 
@@ -52,10 +51,31 @@ def fill():
         imgclass_b.config(image=imageclassing,font=(0,21))
         audiotxt_b.config(image=audiotext,font=(0,21))
         datasearch_b.config(image=datasearch,font=(0,21))
-def upload_file():
+def upload_image():
+    upload_folder = "uploadedimages"
+    os.makedirs(upload_folder, exist_ok=True)
     file_path = filedialog.askopenfilename(
         title="Select a media file",
         filetypes=[("Media Files", "*.png;*.jpg;*.jpeg;")]
+    )
+
+    if not file_path:
+        return
+
+    filename = os.path.basename(file_path)
+    destination_path = os.path.join(upload_folder, filename)
+
+    try:
+        shutil.copy(file_path, destination_path)
+        messagebox.showinfo("Success!", f"File uploaded successfully!\nSaved at: {destination_path}")
+    except Exception as e:
+        messagebox.showerror("Error!", f"Failed to upload file: {e}")
+def upload_audio():
+    upload_folder = "uploadedaudio"
+    os.makedirs(upload_folder, exist_ok=True)
+    file_path = filedialog.askopenfilename(
+        title="Select an audio file",
+        filetypes=[("Audio Files", "*.wav;*.mp3;")]
     )
 
     if not file_path:
@@ -78,8 +98,15 @@ def page_handling(selection):
             break;
     if (selection == 'audio'):
         audiopage = Frame(root,name="audiopage",bg='lightsteelblue', width=(root.winfo_width()-frame.winfo_width()), height=root.winfo_height())
-        upload = Button(audiopage, text='Upload File',relief='flat')
+        aptitle = Label(audiopage, name='aptitle',bg='lightsteelblue',text="Audio Transcription", font=('Bauhaus 93',50))
+        atbox = Text(audiopage,name='atbox', font=('Default','12'),state='disabled')
+        upload = Button(audiopage, text='Upload Audio',relief='flat', command=upload_audio, width=40)
+        aptitle.place(x=280,y=100)
         audiopage.grid(row=0,column=1)
+        upload.place(x=400,y=250)
+        atbox.place(x=200,y=300)
+        atbox.insert("end-1c",'text')
+        audiopage.grid_propagate(False)
 
     elif (selection == 'image'):
         imagepage = Frame(root,bg='palegreen3',name='imagepage', width=(root.winfo_width()-frame.winfo_width()), height=root.winfo_height())
