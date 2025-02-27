@@ -52,7 +52,23 @@ def fill():
         imgclass_b.config(image=imageclassing,font=(0,21))
         audiotxt_b.config(image=audiotext,font=(0,21))
         datasearch_b.config(image=datasearch,font=(0,21))
+def upload_file():
+    file_path = filedialog.askopenfilename(
+        title="Select a media file",
+        filetypes=[("Media Files", "*.png;*.jpg;*.jpeg;")]
+    )
 
+    if not file_path:
+        return
+
+    filename = os.path.basename(file_path)
+    destination_path = os.path.join(upload_folder, filename)
+
+    try:
+        shutil.copy(file_path, destination_path)
+        messagebox.showinfo("Success!", f"File uploaded successfully!\nSaved at: {destination_path}")
+    except Exception as e:
+        messagebox.showerror("Error!", f"Failed to upload file: {e}")
 
 def page_handling(selection):
     pages = ['homepage','audiopage','imagepage','datapage','helppage']
