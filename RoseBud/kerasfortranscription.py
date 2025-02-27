@@ -1,25 +1,12 @@
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
-import pandas as pd
-import  matplotlib.pyplot as plt
-import numpy as np
-from IPython import display
-from jiwer import wer
+from deepspeech import audio, text, load_model
 
+deepspeech = load_model(name='polish-model.bin')
+files = ['to/test/sample.wav']
+transcripts = ['this is a test']
 
-# Following code example at https://keras.io/examples/audio/ctc_asr/
+X = audio.get_features(files)
+y = text.get_batch_labels(transcripts, deepspeech.alphabet)
 
-data_url = "https://data.keithito.com/data/speech/LJSpeech-1.1.tar.bz2"
-data_path = keras.utils.get_file("LJSpeech-1.1", data_url, untar=True)
-wavs_path = data_path + "/wavs/"
-metadata_path = data_path + "/metadata.csv"
-
-
-# Read metadata file and parse it
-metadata_df = pd.read_csv(metadata_path, sep="|", header=None, quoting=3)
-metadata_df.columns = ["file_name", "transcription", "normalized_transcription"]
-metadata_df = metadata_df[["file_name", "normalized_transcription"]]
-metadata_df = metadata_df.sample(frac=1).reset_index(drop=True)
-metadata_df.head(3)
-
+y_hat = deepspeech.model.predict_on_batch(X)
+sentences = deepspeech.decode(y_hat) # also you could pass custom language model
+# or simple:  X, y_hat, sentences = deepspeech(files, full=True)
