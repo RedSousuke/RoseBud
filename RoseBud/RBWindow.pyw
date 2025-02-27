@@ -166,4 +166,5 @@ datasearch_b.grid(row=4,column=0, pady=10)
 frame.grid_propagate(False)
 
 def start():
+    page_handling('home')
     root.mainloop()
