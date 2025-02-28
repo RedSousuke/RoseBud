@@ -99,18 +99,30 @@ def page_handling(selection):
     if (selection == 'audio'):
         audiopage = Frame(root,name="audiopage",bg='lightsteelblue', width=(root.winfo_width()-frame.winfo_width()), height=root.winfo_height())
         aptitle = Label(audiopage, name='aptitle',bg='lightsteelblue',text="Audio Transcription", font=('Bauhaus 93',50))
-        atbox = Text(audiopage,name='atbox', font=('Default','12'),state='disabled')
+        atbox = Text(audiopage,name='atbox', font=('Default','12'))
         upload = Button(audiopage, text='Upload Audio',relief='flat', command=upload_audio, width=40)
         aptitle.place(x=280,y=100)
         audiopage.grid(row=0,column=1)
         upload.place(x=400,y=250)
         atbox.place(x=200,y=300)
         atbox.insert("end-1c",'text')
+        atbox.config(state='disabled')
         audiopage.grid_propagate(False)
 
     elif (selection == 'image'):
         imagepage = Frame(root,bg='palegreen3',name='imagepage', width=(root.winfo_width()-frame.winfo_width()), height=root.winfo_height())
+        imtitle = Label(imagepage, name='imtitle',bg='palegreen3',text="Image Classification", font=('Bauhaus 93',50))
+        upload = Button(imagepage, text='Upload Image',relief='flat', command=upload_image, width=40)
+        itbox = Text(imagepage,name='itbox', font=('Default','12'),state='disabled', width=50)
+        image = PhotoImage(file='Assets/testimage.png')
+        img = Label(imagepage, image=image, width=450, height=400)
+        img.place(x=50,y=300)
+        itbox.place(x=550,y=300)
+        imtitle.place(x=280,y=100)
+        upload.place(x=400,y=250)
+
         imagepage.grid(row=0,column=1)
+        imagepage.grid_propagate(False)
 
     elif (selection == 'data'):
         datapage = Frame(root,bg='pink1',name='datapage', width=(root.winfo_width()-frame.winfo_width()), height=root.winfo_height())
