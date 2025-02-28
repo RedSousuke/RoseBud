@@ -116,6 +116,7 @@ def page_handling(selection):
         itbox = Text(imagepage,name='itbox', font=('Default','12'),state='disabled', width=50)
         image = PhotoImage(file='Assets/testimage.png')
         img = Label(imagepage, image=image, width=450, height=400)
+        img.image = image
         img.place(x=50,y=300)
         itbox.place(x=550,y=300)
         imtitle.place(x=280,y=100)
