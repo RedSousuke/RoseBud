@@ -25,12 +25,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="RBConfig.pyw" />
+    <Compile Include="RBImageClassification.py" />
     <Compile Include="RBWindow.pyw" />
     <Compile Include="RoseBud.pyw" />
     <Compile Include="Transcriptor.pyw" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
+    <Folder Include="TrainingImages\" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">
