@@ -52,7 +52,7 @@ def fill():
         audiotxt_b.config(image=audiotext,font=(0,21))
         datasearch_b.config(image=datasearch,font=(0,21))
 def upload_image():
-    upload_folder = "uploadedimages"
+    upload_folder = "uploads/images"
     os.makedirs(upload_folder, exist_ok=True)
     file_path = filedialog.askopenfilename(
         title="Select a media file",
@@ -71,7 +71,7 @@ def upload_image():
     except Exception as e:
         messagebox.showerror("Error!", f"Failed to upload file: {e}")
 def upload_audio():
-    upload_folder = "uploadedaudio"
+    upload_folder = "uploads/audio"
     os.makedirs(upload_folder, exist_ok=True)
     file_path = filedialog.askopenfilename(
         title="Select an audio file",
@@ -105,7 +105,7 @@ def page_handling(selection):
         audiopage.grid(row=0,column=1)
         upload.place(x=400,y=250)
         atbox.place(x=200,y=300)
-        atbox.insert("end-1c",'text')
+        atbox.insert("end-1c",'Audio transcription goes here')
         atbox.config(state='disabled')
         audiopage.grid_propagate(False)
 

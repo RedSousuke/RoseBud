@@ -24,10 +24,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="kerasfortranscription.py" />
     <Compile Include="RBConfig.pyw" />
     <Compile Include="RBWindow.pyw" />
     <Compile Include="RoseBud.pyw" />
+    <Compile Include="Transcriptor.pyw" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
