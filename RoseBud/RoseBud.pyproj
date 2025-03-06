@@ -25,14 +25,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="RBConfig.pyw" />
-    <Compile Include="RBImageClassification.py" />
+    <Compile Include="ICResource\RBImageClassification.py" />
     <Compile Include="RBWindow.pyw" />
     <Compile Include="RoseBud.pyw" />
-    <Compile Include="Transcriptor.pyw" />
+    <Compile Include="TranscriptionResource\RBTranscriptor.pyw" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="TrainingImages\" />
+    <Folder Include="ICResource\" />
+    <Folder Include="TranscriptionResource\" />
+    <Folder Include="ICResource\TrainingImages\" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

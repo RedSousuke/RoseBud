@@ -1,4 +1,4 @@
 import RBWindow
+from TranscriptionResource import RBTranscriptor
 
-Transcriptor.test()
 RBWindow.start()

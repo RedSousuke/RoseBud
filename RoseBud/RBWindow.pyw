@@ -2,7 +2,9 @@
 from tkinter import *
 from tkinter import filedialog, messagebox
 import RBConfig as rbc
+from TranscriptionResource import RBTranscriptor
 import os
+from os import listdir
 import shutil
 
 
@@ -75,7 +77,7 @@ def upload_audio():
     os.makedirs(upload_folder, exist_ok=True)
     file_path = filedialog.askopenfilename(
         title="Select an audio file",
-        filetypes=[("Audio Files", "*.wav;*.mp3;")]
+        filetypes=[("Audio Files", "*.wav;*.flac;")]
     )
 
     if not file_path:
@@ -89,23 +91,36 @@ def upload_audio():
         messagebox.showinfo("Success!", f"File uploaded successfully!\nSaved at: {destination_path}")
     except Exception as e:
         messagebox.showerror("Error!", f"Failed to upload file: {e}")
+    
+
 
 def page_handling(selection):
+    def run_transcribe(): 
+        file = listdir("uploads/audio/")[-1]
+        atbox.config(state='normal')
+        atbox.delete('1.0', END)
+        transcription = RBTranscriptor.transcribe(file)
+        print(transcription)
+        atbox.insert("end-1c", transcription)
+        atbox.config(state='disabled')
     pages = ['homepage','audiopage','imagepage','datapage','helppage']
     for ch in root.children:
         if ch in pages:
             root.children.get(ch).destroy()
             break;
     if (selection == 'audio'):
+        global atbox
         audiopage = Frame(root,name="audiopage",bg='lightsteelblue', width=(root.winfo_width()-frame.winfo_width()), height=root.winfo_height())
         aptitle = Label(audiopage, name='aptitle',bg='lightsteelblue',text="Audio Transcription", font=('Bauhaus 93',50))
         atbox = Text(audiopage,name='atbox', font=('Default','12'))
         upload = Button(audiopage, text='Upload Audio',relief='flat', command=upload_audio, width=40)
+        go = Button(audiopage, text='Transcribe',relief='flat', command=run_transcribe)
         aptitle.place(x=280,y=100)
         audiopage.grid(row=0,column=1)
         upload.place(x=400,y=250)
         atbox.place(x=200,y=300)
-        atbox.insert("end-1c",'Audio transcription goes here')
+        go.place(x=800,y=250)
+        atbox.insert("end-1c", "Transcripted audio goes here")
         atbox.config(state='disabled')
         audiopage.grid_propagate(False)
 
