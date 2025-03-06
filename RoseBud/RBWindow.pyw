@@ -99,9 +99,13 @@ def upload_audio():
 
 
 def page_handling(selection):
+    def generate_imagedisplay(image):
+        img = Label(imagepage, image=image, width=450, height=440)
+        img.image = image
+        img.place(x=50,y=300)
     def run_transcribe(): 
         if (len(listdir("uploads/audio/")) == 0):
-            messagebox.showerror("Error", "No audio file uploaded")
+            messagebox.showerror("File Read Error", "No audio file uploaded")
             return
         file = listdir("uploads/audio/")[-1]
         atbox.config(state='normal')
@@ -111,6 +115,19 @@ def page_handling(selection):
         atbox.insert("end-1c", transcription)
         atbox.config(state='disabled')
         os.remove(f"uploads/audio/{file}")
+    def run_classify():
+        if (len(listdir("uploads/images/"))== 0):
+            messagebox.showerror("File Read Error", "No image file uploaded")
+            return
+        file = listdir("uploads/images/")[-1]
+        requestimage = PhotoImage(file,width=450,height=440)
+        itbox.config(state='normal')
+        itbox.delete('1.0', END)
+        generate_imagedisplay(requestimage)
+        imagetext = "" # connect result of image classification to this variable
+        print(imagetext)
+        itbox.insert('end-1c',imagetext)
+
     pages = ['homepage','audiopage','imagepage','datapage','helppage']
     for ch in root.children:
         if ch in pages:
@@ -138,9 +155,9 @@ def page_handling(selection):
         upload = Button(imagepage, text='Upload Image',relief='flat', command=upload_image, width=40)
         itbox = Text(imagepage,name='itbox', font=('Default','12'),state='disabled', width=50)
         image = PhotoImage(file='Assets/testimage.png',width=450, height=440)
-        img = Label(imagepage, image=image, width=450, height=440)
-        img.image = image
-        img.place(x=50,y=300)
+        go = Button(imagepage, text='Classify',relief='flat', command=run_classify)
+        generate_imagedisplay(image)
+        go.place(x=800,y=250)
         itbox.place(x=550,y=300)
         imtitle.place(x=280,y=100)
         upload.place(x=400,y=250)
