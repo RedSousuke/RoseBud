@@ -3,8 +3,10 @@ from operator import contains
 from tkinter import *
 from tkinter import filedialog, messagebox
 from tkinter import font
+import tkinter
 import RBConfig as rbc
 from TranscriptionResource import RBTranscriptor
+from DataAnalysis import RBDataAnalyser
 import os
 from os import listdir
 import shutil
@@ -148,6 +150,14 @@ def page_handling(selection):
         imagetext = "" # connect result of image classification to this variable
         print(imagetext)
         itbox.insert('end-1c',imagetext)
+    def run_analysis():
+        os.makedirs('output/sheets', exist_ok=True)
+        if (len(listdir("uploads/sheets/")) == 0):
+            messagebox.showerror("File Read Error", "No data file uploaded")
+            return
+        file = "uploads/sheets/"+listdir("uploads/sheets/")[-1]
+        RBDataAnalyser.predictSheet(file, date_var.get())
+        
 
     pages = ['homepage','audiopage','imagepage','datapage','helppage']
     for ch in root.children:
@@ -187,8 +197,20 @@ def page_handling(selection):
         imagepage.grid_propagate(False)
 
     elif (selection == 'data'):
+        date_var = tkinter.StringVar()
         datapage = Frame(root,bg='pink1',name='datapage', width=(root.winfo_width()-frame.winfo_width()), height=root.winfo_height())
+        dptitle = Label(datapage, name='dptitle',bg='pink1',text="Data Analysis", font=('Bauhaus 93',50))
+        upload = Button(datapage, text='Upload Data',relief='flat', command=upload_sheet, width=40)
+        targetDeets = Label(datapage, text='Target Date (format yyyy-mm):',bg='pink1', font=('Default','12'))
+        targetDate = Entry(datapage, name='target',textvariable=date_var, width=40)
+        export = Button(datapage, text='Export Data',relief='flat',command=run_analysis, width=40)
+        dptitle.place(x=280,y=100)
+        upload.place(x=400,y=250)
+        targetDeets.place(x=440,y=300)
+        targetDate.place(x=425,y=320)
+        export.place(x=400,y=350)
         datapage.grid(row=0,column=1)
+        datapage.grid_propagate(False)
 
     elif (selection == 'help'):
         helppage = Frame(root,bg='azure3',name='helppage', width=(root.winfo_width()-frame.winfo_width()), height=root.winfo_height())
@@ -209,7 +231,7 @@ def page_handling(selection):
         contacttitle.place(x=100,y=220)
         contactinforyan = Label(helpside,bg='azure2',wraplength=350, text="Ryan M:        rmeeks@student.neumont.edu", font=('Default',14))
         contactinfologan = Label(helpside,bg='azure2',wraplength=350, text="Logan S: lostevens@student.neumont.edu", font=('Default',14))
-        faqinfo = Label(faqside,bg='azure2',wraplength=350, text="Q: What is this app for?\nA: This app is designed to assist users with audio transcription, image classification and data searching.\n\nQ: How do I use the audio transcription feature?\nA: Click on the 'Audio Module' button in the sidebar, then click 'Upload Audio' to upload an audio file. Once uploaded, click 'Transcribe' to generate a transcript.\n\nQ: How do I use the image classification feature?\nA: Click on the 'Image Module' button in the sidebar, then click 'Upload Image' to upload an image file. The image will be displayed on the screen, and the classification will be displayed in the text box.\n\nQ: How do I use the data search feature?\nA: Click on the 'Data Module' button in the sidebar to access the data search feature. Enter your search query in the search box and click 'Search' to retrieve the results.", font=('Default','12'))
+        faqinfo = Label(faqside,bg='azure2',wraplength=350, text="Q: What is this app for?\nA: This app is designed to assist users with audio transcription, image classification and data analysis.\n\nQ: How do I use the audio transcription feature?\nA: Click on the 'Audio Module' button in the sidebar, then click 'Upload Audio' to upload an audio file. Once uploaded, click 'Transcribe' to generate a transcript.\n\nQ: How do I use the image classification feature?\nA: Click on the 'Image Module' button in the sidebar, then click 'Upload Image' to upload an image file. The image will be displayed on the screen, and the classification will be displayed in the text box.\n\nQ: How do I use the data analysis feature?\nA: Click on the 'Data Module' button in the sidebar to access the data analysis feature. Upload a CSV with the data you would like a prediction for and set the target date, then click 'Export Data'", font=('Default','12'))
         helpinfo = Label(helpside,bg='azure2',wraplength=350, text="This app is designed to assist users with audio transcription, image classification and data searching. If you have any questions or need help, please refer to the FAQ section or contact us.", font=('Default','14'))
         faqside.place(x=650,y=200)
         helpinfo.place(x=25,y=80)
@@ -228,10 +250,10 @@ def page_handling(selection):
         datainfo.grid_propagate(False)
         hyperaudio = Button(audioinfo,bg='sea green', text='Audio Transcription',relief='flat', width=23, font=('Bauhaus 93', 18), command=setAudio)
         hyperimage = Button(imageinfo,bg='sea green', text='Image Classification',relief='flat', width=23, font=('Bauhaus 93', 18), command=setImage)
-        hyperdata = Button(datainfo,bg='sea green', text='Data Search',relief='flat', width=23, font=('Bauhaus 93', 18), command=setData)
+        hyperdata = Button(datainfo,bg='sea green', text='Data Analysis',relief='flat', width=23, font=('Bauhaus 93', 18), command=setData)
         audiobrief = Label(audioinfo,bg='steelblue4', wraplength=250, text="'What did they say?' If you find yourself in need of a text form of recorded speech, this app offers a tool to to generate a transcript", font=('Default','14'))
         imagebrief = Label(imageinfo,bg='steelblue4', wraplength=250, text="Identify contents of an image", font=('Default','14'))
-        databrief = Label(datainfo,bg='steelblue4', wraplength=250, text="AI assisted data searching", font=('Default','14'))
+        databrief = Label(datainfo,bg='steelblue4', wraplength=250, text="AI may not be the best tool for trying to predict the future, however it IS able to identify patterns. If you want to get a feel for when a product might sell best, this tool can generate a spreadsheet of potential total sales by a specific date", font=('Default','14'))
         hometitle.place(x=80,y=100)
         audioinfo.place(x=100,y=300)
         imageinfo.place(x=410,y=300)
