@@ -151,12 +151,15 @@ def page_handling(selection):
         print(imagetext)
         itbox.insert('end-1c',imagetext)
     def run_analysis():
+        messagebox.showinfo("Program Info","Processing Spreadsheet")
         os.makedirs('output/sheets', exist_ok=True)
         if (len(listdir("uploads/sheets/")) == 0):
             messagebox.showerror("File Read Error", "No data file uploaded")
             return
         file = "uploads/sheets/"+listdir("uploads/sheets/")[-1]
         RBDataAnalyser.predictSheet(file, date_var.get())
+        userAssurance.config(text="Saved at RoseBud/output/sheets")
+        return 0
         
 
     pages = ['homepage','audiopage','imagepage','datapage','helppage']
@@ -203,12 +206,14 @@ def page_handling(selection):
         upload = Button(datapage, text='Upload Data',relief='flat', command=upload_sheet, width=40)
         targetDeets = Label(datapage, text='Target Date (format yyyy-mm):',bg='pink1', font=('Default','12'))
         targetDate = Entry(datapage, name='target',textvariable=date_var, width=40)
+        userAssurance = Label(datapage, bg='pink1', name="userassurance", text="",font=('Default',12))
         export = Button(datapage, text='Export Data',relief='flat',command=run_analysis, width=40)
         dptitle.place(x=280,y=100)
         upload.place(x=400,y=250)
         targetDeets.place(x=440,y=300)
         targetDate.place(x=425,y=320)
         export.place(x=400,y=350)
+        userAssurance.place(y=400,x=425)
         datapage.grid(row=0,column=1)
         datapage.grid_propagate(False)
 
@@ -253,7 +258,7 @@ def page_handling(selection):
         hyperdata = Button(datainfo,bg='sea green', text='Data Analysis',relief='flat', width=23, font=('Bauhaus 93', 18), command=setData)
         audiobrief = Label(audioinfo,bg='steelblue4', wraplength=250, text="'What did they say?' If you find yourself in need of a text form of recorded speech, this app offers a tool to to generate a transcript", font=('Default','14'))
         imagebrief = Label(imageinfo,bg='steelblue4', wraplength=250, text="Identify contents of an image", font=('Default','14'))
-        databrief = Label(datainfo,bg='steelblue4', wraplength=250, text="AI may not be the best tool for trying to predict the future, however it IS able to identify patterns. If you want to get a feel for when a product might sell best, this tool can generate a spreadsheet of potential total sales by a specific date", font=('Default','14'))
+        databrief = Label(datainfo,bg='steelblue4', wraplength=250, text="If you needed assistance with identifying trends in sales, this is the tool for you! Upload a CSV to generate the estimated total sales of inventory for a selected month", font=('Default','14'))
         hometitle.place(x=80,y=100)
         audioinfo.place(x=100,y=300)
         imageinfo.place(x=410,y=300)
