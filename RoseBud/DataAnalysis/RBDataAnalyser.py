@@ -1,3 +1,4 @@
+from encodings.punycode import T
 from turtle import setup
 import keras
 from keras.models import Sequential
@@ -12,7 +13,6 @@ import pandas as pd
 import numpy as np
 import pandas as pd
 
-keras.Model.predict
 # Following notebook at https://www.kaggle.com/code/sanket30/predicting-sales-using-keras-regressor/notebook
 def setup(OPFILE,TARGET):
     trainingsales = pd.read_csv(OPFILE, parse_dates=['date'], date_format='mixed', dayfirst=True)
@@ -30,7 +30,10 @@ def setup(OPFILE,TARGET):
     X_train = dftest.drop(labels=[TARGET], axis=1)
 
     global X_test
-    X_test = dftest.drop(labels=['2013-01'],axis=1)
+    targetyear = int(TARGET.split('-')[0]) - 2
+    targetmonth = int(TARGET.split('-')[1])
+    first = f"{targetyear}-{targetmonth}"
+    X_test = dftest.drop(labels=first,axis=1)
 def predictSheet(file, target):
     setup(file,target)
     kmod = Sequential()
@@ -45,7 +48,7 @@ def predictSheet(file, target):
     print("Train Start...")
     kmod.fit(X_train, y_train, epochs=100, batch_size=2000, verbose=2)
     global y_pred;
-    y_pred = kmod.predict(X_test).clip(0, 20)
+    y_pred = kmod.predict(X_test).clip(0., 20.)
     y_pred = pd.DataFrame(y_pred, columns=['item_cnt_month'])
     y_pred.to_csv('output/sheets/predictions.csv', index_label='ID')
     
