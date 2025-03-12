@@ -59,6 +59,7 @@ def fill():
         help_b.config(image=helpimage,font=(0,21))
 def upload_image():
     upload_folder = "uploads/images"
+    file = listdir(upload_folder+'/')[-1]
     os.makedirs(upload_folder, exist_ok=True)
     file_path = filedialog.askopenfilename(
         title="Select a media file",
@@ -73,11 +74,13 @@ def upload_image():
 
     try:
         shutil.copy(file_path, destination_path)
-        messagebox.showinfo("Success!", f"File uploaded successfully!\nSaved at: {destination_path}")
+        messagebox.showinfo("Success!", f"File uploaded successfully!\n")
     except Exception as e:
         messagebox.showerror("Error!", f"Failed to upload file: {e}")
 def upload_audio():
     upload_folder = "uploads/audio"
+    file = listdir(upload_folder+'/')[-1]
+    os.remove(f"uploads/audio/{file}")
     os.makedirs(upload_folder, exist_ok=True)
     file_path = filedialog.askopenfilename(
         title="Select an audio file",
@@ -92,7 +95,26 @@ def upload_audio():
 
     try:
         shutil.copy(file_path, destination_path)
-        messagebox.showinfo("Success!", f"File uploaded successfully!\nSaved at: {destination_path}")
+        messagebox.showinfo("Success!", f"File uploaded successfully!\n")
+    except Exception as e:
+        messagebox.showerror("Error!", f"Failed to upload file: {e}")
+def upload_sheet():
+    upload_folder = "uploads/sheets"
+    os.makedirs(upload_folder, exist_ok=True)
+    file_path = filedialog.askopenfilename(
+        title="Select a CSV file",
+        filetypes=[("CSV Files", "*.csv")]
+    )
+
+    if not file_path:
+        return
+
+    filename = os.path.basename(file_path)
+    destination_path = os.path.join(upload_folder, filename)
+
+    try:
+        shutil.copy(file_path, destination_path)
+        messagebox.showinfo("Success!", f"File uploaded successfully!")
     except Exception as e:
         messagebox.showerror("Error!", f"Failed to upload file: {e}")
     
@@ -114,7 +136,6 @@ def page_handling(selection):
         print(transcription)
         atbox.insert("end-1c", transcription)
         atbox.config(state='disabled')
-        os.remove(f"uploads/audio/{file}")
     def run_classify():
         if (len(listdir("uploads/images/"))== 0):
             messagebox.showerror("File Read Error", "No image file uploaded")
